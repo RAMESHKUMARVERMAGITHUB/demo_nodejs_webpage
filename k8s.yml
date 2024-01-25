@@ -1,35 +1,32 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: weather-app-deployment
+  name: demo_nodejs_webpage
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: weather-app
+      app: demo_nodejs_webpage
   template:
     metadata:
       labels:
-        app: weather-app
+        app: demo_nodejs_webpage
     spec:
       containers:
-      - name: weather-app
-        image: rameshkumarverma/nodejs-weather-app:latest 
+      - name: demo_nodejs_webpage
+        image: rameshkumarverma/demo_nodejs_webpage:latest 
         ports:
-        - containerPort: 3000
-        env:
-        - name: API_KEY
-          value: "123456789"   #put api key from openweather app
+        - containerPort: 8080
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: weather-app-service
+  name:demo_nodejs_webpage-service
 spec:
   selector:
-    app: weather-app
+    app: demo_nodejs_webpage
   type: NodePort
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 3000
+      targetPort: 8080
