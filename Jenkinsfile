@@ -15,7 +15,7 @@ pipeline {
         }
         stage('Checkout from Git') {
             steps {
-                git branch: 'master', url: 'https://github.com/RAMESHKUMARVERMAGITHUB/demo_nodejs_webpage.git'
+                git branch: 'main', url: 'https://github.com/RAMESHKUMARVERMAGITHUB/demo_nodejs_webpage.git'
             }
         }
         stage("Sonarqube Analysis") {
