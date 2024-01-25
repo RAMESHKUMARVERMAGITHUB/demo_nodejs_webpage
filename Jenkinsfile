@@ -15,14 +15,14 @@ pipeline {
         }
         stage('Checkout from Git') {
             steps {
-                git branch: 'master', url: 'https://github.com/RAMESHKUMARVERMAGITHUB/nodejs-weather-app.git'
+                git branch: 'master', url: 'https://github.com/RAMESHKUMARVERMAGITHUB/demo_nodejs_webpage.git'
             }
         }
         stage("Sonarqube Analysis") {
             steps {
                 withSonarQubeEnv('sonar-server') {
-                    sh '''$SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=nodejs-weather-app \
-                    -Dsonar.projectKey=nodejs-weather-app'''
+                    sh '''$SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=demo_nodejs_webpage \
+                    -Dsonar.projectKey=demo_nodejs_webpage'''
                 }
             }
         }
@@ -47,21 +47,21 @@ pipeline {
              steps{
                  script{
                    withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){   
-                      sh "docker build -t rameshkumarverma/nodejs-weather-app:latest ."
-                    //   sh "docker tag nodejs-weather-app rameshkumarverma/nodejs-weather-app:latest "
-                      sh "docker push rameshkumarverma/nodejs-weather-app:latest "
+                      sh "docker build -t rameshkumarverma/demo_nodejs_webpage:latest ."
+                    //   sh "docker tag demo_nodejs_webpage rameshkumarverma/demo_nodejs_webpage:latest "
+                      sh "docker push rameshkumarverma/demo_nodejs_webpage:latest "
                     }
                 }
             }
         }
         stage("TRIVY Image Scan"){
             steps{
-                sh "trivy image rameshkumarverma/nodejs-weather-app:latest > trivyimage.txt" 
+                sh "trivy image rameshkumarverma/demo_nodejs_webpage:latest > trivyimage.txt" 
             }
         }
         stage('docker deploy'){
             steps{
-                sh "docker run -d -p 3000:3000 -e API_KEY=123456789 rameshkumarverma/nodejs-weather-app:latest"  #key from openweather app
+                sh "docker run -d -p 8080:8080 rameshkumarverma/demo_nodejs_webpage:latest" 
             }
         }
         stage('Deploy to Kubernets'){
